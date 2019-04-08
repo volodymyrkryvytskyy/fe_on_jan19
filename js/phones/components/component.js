@@ -3,6 +3,16 @@ export default class Component {
         this._element = element;
     }
 
+    on(eventName, selector, callback) {
+        this._element.addEventListener('click', (event) => {
+            const delegatedTarget = event.target.closest(selector);
+            if (!delegatedTarget) {
+                return;
+            }
+            callback();
+        });
+    }
+    
     hide() {
         this._element.hidden = true;
     }
