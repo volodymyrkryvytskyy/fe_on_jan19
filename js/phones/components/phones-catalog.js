@@ -17,8 +17,9 @@ export default class PhonesCatalog extends Component {
         });
 
         this.on('click', '[data-element="add-button"]', (event) => {
-            const phoneName = event.target.dataset.phoneName;
-            this.emit('phone-added', phoneName);
+            const phoneEl = event.target.closest('[data-element="phone-element"]');
+            const phoneId = phoneEl.dataset.phoneId;
+            this.emit('phone-added', phoneId);
         });
 
     }

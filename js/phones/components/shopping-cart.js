@@ -3,21 +3,46 @@ import Component from "./component.js";
 export default class ShoppingCart extends Component {
   constructor({ element }) {
     super({ element });
+    this._items = {};
     this._render();
+
+    this.on("click", '[data-element="remove"]', (event) => {
+      const phoneEl = event.target.closest("li");
+      const phoneId = phoneEl.dataset.phoneId;
+      this.remove(phoneId);
+    });
   }
 
   addToCart(name) {
-    const list = this._element.querySelector('[data-element="cart-list"]');
-    list.insertAdjacentHTML('beforeend', `<li>${name}</li>`);
+    if (!this._items.hasOwnProperty(name)) {
+      this._items[name] = 0;
+    }
+    this._items[name] += 1;
+    this._render();
   }
+
+  remove(name) {
+    if (this._items[name] === 1) {
+      delete this._items[name];
+    } else {
+      this._items[name] -= 1;
+    }
+    this._render();
+  }
+
   _render() {
     this._element.innerHTML = `
       <p>Shopping Cart</p>
-      <ul data-element="cart-list">
-          <li>Phone 1</li>
-          <li>Phone 2</li>
-          <li>Phone 3</li>
+      <ul>
+          ${Object.entries(this._items)
+            .map(
+              ([name, quantity]) => `
+        <li data-phone-id="${name}">${name} - ${quantity}
+        <button data-element="remove">X</button></li>
+        `
+            )
+            .join("")}
       </ul>
-      `
+      `;
   }
 }

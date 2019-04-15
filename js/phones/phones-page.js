@@ -40,6 +40,10 @@ export default class PhonesPage {
             this._catalog.show();
             this._viewer.hide();
         })
+
+        this._viewer.subscribe('phone-added', (name) => {
+            this._cart.addToCart(name);
+        })
     }
 
     _initCart() {
