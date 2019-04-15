@@ -40,8 +40,8 @@ export default class PhonesCatalog extends Component {
                         <img alt="${phone.name}™ with Wi-Fi" src="${phone.imageUrl}" data-element="phone-img">
                         </a>
 
-                        <div class="phones__btn-buy-wrapper" data-element="add-button">
-                        <a class="btn btn-success" data-phone-name="${phone.name}">
+                        <div class="phones__btn-buy-wrapper">
+                        <a class="btn btn-success" data-phone-name="${phone.name}" data-element="add-button">
                             Add
                         </a>
                         </div>
