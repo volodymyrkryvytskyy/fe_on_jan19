@@ -1,4 +1,5 @@
 import Component from './component.js';
+import ShoppingCart from './shopping-cart.js';
 
 export default class PhonesCatalog extends Component {
     constructor({
@@ -14,6 +15,12 @@ export default class PhonesCatalog extends Component {
             const phoneId = phoneEl.dataset.phoneId;
             this.emit('phone-selected', phoneId);
         });
+
+        this.on('click', '[data-element="add-button"]', (event) => {
+            const phoneName = event.target.dataset.phoneName;
+            this.emit('phone-added', phoneName);
+        });
+
     }
     
     _render() {
@@ -30,11 +37,11 @@ export default class PhonesCatalog extends Component {
                         href="#!/phones/motorola-xoom-with-wi-fi" 
                         class="thumb"
                         data-element="details-link">
-                        <img alt="${phone.name}™ with Wi-Fi" src="${phone.imageUrl}">
+                        <img alt="${phone.name}™ with Wi-Fi" src="${phone.imageUrl}" data-element="phone-img">
                         </a>
 
-                        <div class="phones__btn-buy-wrapper">
-                        <a class="btn btn-success">
+                        <div class="phones__btn-buy-wrapper" data-element="add-button">
+                        <a class="btn btn-success" data-phone-name="${phone.name}">
                             Add
                         </a>
                         </div>
