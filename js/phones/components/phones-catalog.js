@@ -2,12 +2,9 @@ import Component from './component.js';
 import ShoppingCart from './shopping-cart.js';
 
 export default class PhonesCatalog extends Component {
-    constructor({
-        element,
-        phones = []
-    }) {
+    constructor({ element }) {
         super({ element });
-        this._phones = phones;
+        this._phones = [];
         this._render();
 
         this.on('click', '[data-element="details-link"]', (event) => {
@@ -24,6 +21,13 @@ export default class PhonesCatalog extends Component {
 
     }
     
+    
+    show(phones) {
+        this._phones = phones;
+        super.show();
+        this._render();
+    }
+
     _render() {
         this._element.innerHTML = `
         <ul class="phones">
