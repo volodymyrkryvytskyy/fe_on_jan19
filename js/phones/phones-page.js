@@ -3,16 +3,28 @@ import PhoneViewer from './components/phone-viewer.js';
 import ShoppingCart from './components/shopping-cart.js';
 import Filter from './components/filter.js';
 import PhonesService from './services/phones-service.js';
+import PhoneService from './services/phones-service.js';
 
 export default class PhonesPage {
     constructor({ element }) {
         this._element = element;
+        this._phones = [];
+        this._setPhones();
+        // this._render();
+        // this._initFilter();
+        // this._initCatalog();
+        // this._initViewer();
+        // this._initCart();
+    }
+
+
+    async _setPhones() {
+        this._phones = await PhoneService.getAll();
         this._render();
         this._initFilter();
         this._initCatalog();
         this._initViewer();
         this._initCart();
-        
     }
 
     _initCatalog() {
@@ -24,9 +36,10 @@ export default class PhonesPage {
 
         this._catalog.subscribe('phone-selected', (id) => {
             console.log('Selected: ', id);
-            const phoneDetails = PhonesService.getById(id);
-            this._catalog.hide();
-            this._viewer.show(phoneDetails);
+            PhonesService.getById(id).then((phoneDetails) => {
+                this._catalog.hide();
+                this._viewer.show(phoneDetails);
+            })
         })
 
         this._catalog.subscribe('phone-added', (name) => {
@@ -71,9 +84,10 @@ export default class PhonesPage {
 
     _showPhones() {
         this._currentFiltering = this._filter.getCurrent();
-        const phones = PhonesService.getAll(this._currentFiltering);
-        console.log('Showing phones by criteria:', this._currentFiltering);
-        this._catalog.show(phones);
+        let filteredPhones = this._phones.filter((phone) => {
+            return phone.name.toLowerCase().includes(this._currentFiltering.query.toLowerCase())
+        })
+            this._catalog.show(filteredPhones);
     }
 
     _render() {
